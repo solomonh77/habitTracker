@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboardPage.css" />
+    <title> Habit Tracker Website! </title>
+</head>
+
+<body>
+    <h1> Habit Tracker </h1>
+    <div class="navbar">
+        <ul>
+            <li>
+                <a href="homePage.html"> <button> Home !</button></a>
+
+                <a href="signupPage.html"> <button> Sign Out! </button> </a>
+            </li>
+        </ul>
+        <a href="habitPage.html"> <button> create a new habit!</button></a>
+
+        <table>
+            <tr>
+                <td>Habit Name</td>
+                <td>Target Frequency</td>
+                <td>Long Term Goal</td>
+            </tr>
+        </table>
+
+        /* Timer */
+        <h2>Countdown Timer</h2>
+        <label for="timeInput">Enter time in minutes:</label>
+        <input type="number" id="timeInput" min="1">
+        <button onclick="startTimer()">Start Timer</button>
+        <button onclick="stopTimer()"> Stop Timer</button>
+        <button onclick="resetPage()"> Reset Timer</button>
+
+        <h2 id="countdownDisplay">00:00</h2>
+        <p> You must keep this tab open for the timer to work!
+            <script src="timer.js"></script>
+
+    </div>
+</body>
+
+</html>
