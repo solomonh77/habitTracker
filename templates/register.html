@@ -1,17 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head> 
-    <meta charset = "UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scal">
-    <title> Home </title>
-</head>
-
-<body>
-        <h1> Login Authenication System in Flask.</h1>
-        <a herf="{{url_for('login')}}"> Login Page</a><br>
-</body>
-
-
-</html>
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h2>Register</h2>
+    <form method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login Here</a></p>
+    {% if get_flashed_messages() %}
+        <ul class="flashes">
+            {% for message in get_flashed_messages() %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}
