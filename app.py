@@ -61,13 +61,13 @@ class User(db.Model):
 
 @app.route('/', methods=['GET'])
 def home():
-   session.pop('username')
+   session.pop('username', None)
    if 'username' in session:
        return redirect (url_for('dashboard'))
    
 
 
-   return render_template('loginhtml')
+   return render_template('login.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
