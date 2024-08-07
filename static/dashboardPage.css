@@ -1,6 +1,6 @@
 body {
 
-    background-image: linear-gradient(to right, #A7DDB6, #A7DCDD, #A7C1DD);
+    background-image: linear-gradient(to right, #f59292, #f5a692, #f5ba92);
 
 }
 
@@ -58,4 +58,24 @@ th {
     border: 1px solid black;
     text-align: left;
     padding: 8px;
+
+}
+
+.dashboardlayout {
+    display: flex;
+}
+
+.timer {
+    flex-direction: column;
+    margin-left: 100px;
+    margin-top: 0px;
+}
+
+.habitTable {
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+#linkToHabit {
+    margin-top: 10px;
 }

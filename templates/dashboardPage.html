@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboardPage.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboardPage.css') }}" />
     <title> Habit Tracker Website! </title>
 </head>
 
@@ -13,33 +13,49 @@
     <div class="navbar">
         <ul>
             <li>
-                <a href="homePage.html"> <button> Home !</button></a>
+                <a href="{{url_for('home')}}"> <button> Login Page! </button></a><br>
 
                 <a href="signupPage.html"> <button> Sign Out! </button> </a>
             </li>
         </ul>
-        <a href="habitPage.html"> <button> create a new habit!</button></a>
+    </div>
+    <div class="dashboardlayout">
+        <div class="habitTable">
 
-        <table>
-            <tr>
-                <td>Habit Name</td>
-                <td>Target Frequency</td>
-                <td>Long Term Goal</td>
-            </tr>
-        </table>
 
-        /* Timer */
-        <h2>Countdown Timer</h2>
-        <label for="timeInput">Enter time in minutes:</label>
-        <input type="number" id="timeInput" min="1">
-        <button onclick="startTimer()">Start Timer</button>
-        <button onclick="stopTimer()"> Stop Timer</button>
-        <button onclick="resetPage()"> Reset Timer</button>
+            <table>
+                <tr>
+                    <th> Habit </th>
+                    <th> Habit Description </th>
+                    <th> Frequency </th>
+                    <th> Difficulty</th>
+                </tr>
+                <tr>
+                    <td> {{habit_name}}</td>
+                    <td> {{habit_description}}</td>
+                    <td> {{frequency}} </td>
+                    <td> {{difficulty}}</td>
 
-        <h2 id="countdownDisplay">00:00</h2>
-        <p> You must keep this tab open for the timer to work!
-            <script src="timer.js"></script>
+                </tr>
+            </table>
+            <a href="{{url_for('habitPage')}}"> <button id="linkToHabit"> Click here to create a new habit!
+                </button></a><br>
+        </div>
+        <div class="timer">
 
+
+            <h2>Countdown Timer</h2>
+
+            <label for="timeInput">Enter time in minutes:</label>
+            <input type="number" id="timeInput" min="1">
+            <button onclick="startTimer()">Start Timer</button>
+            <button onclick="stopTimer()"> Stop Timer</button>
+            <button onclick="resetPage()"> Reset Timer</button>
+
+            <h2 id="countdownDisplay">00:00</h2>
+            <p> You must keep this tab open for the timer to work!
+                <script src="static/timer.js"></script>
+        </div>
     </div>
 </body>
 
