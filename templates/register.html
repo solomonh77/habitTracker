@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Register{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='registerPage.css') }}" />
+
+{% endblock %}
 {% block content %}
+<h1> Habit Tracker </h1>
 <div class="form-container">
+   
     <h2>Register</h2>
     <form method="POST">
         <label for="username">Username:</label>
@@ -12,11 +18,11 @@
     </form>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login Here</a></p>
     {% if get_flashed_messages() %}
-        <ul class="flashes">
-            {% for message in get_flashed_messages() %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul class="flashes">
+        {% for message in get_flashed_messages() %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
 </div>
 {% endblock %}

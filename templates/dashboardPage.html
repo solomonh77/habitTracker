@@ -9,16 +9,15 @@
 </head>
 
 <body>
-    <h1> Habit Tracker </h1>
     <div class="navbar">
-        <ul>
-            <li>
-                <a href="{{url_for('home')}}"> <button> Login Page! </button></a><br>
-
-                <a href="signupPage.html"> <button> Sign Out! </button> </a>
-            </li>
-        </ul>
+        <a href="{{ url_for('logout') }}"><button> Log Out! </button></a>
+        <a href="{{ url_for('home') }}"><button> Homepage! </button></a>
     </div>
+    <h1> Habit Tracker </h1>
+
+
+    <h2>Welcome, {{ session['username'] }}!</h2>
+    <p>This is your personal dashboard where you can view all your habit insights.</p>
     <div class="dashboardlayout">
         <div class="habitTable">
 

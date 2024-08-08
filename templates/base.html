@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>{% block title %}HabitTracker{% endblock %}</title>
+    {% block css %}{% endblock %}
+
 </head>
+
 <body>
     <div class="navbar">
         {% if session['username'] %}
-        <a href="{{ url_for('dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('logout') }}">Logout</a>
-        
+        <a href="{{ url_for('dashboard') }}"><button> Dashboard </button></a>
+        <a href="{{ url_for('logout') }}"><button> Logout </button></a>
+
+
         {% else %}
-        <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}"><button> Login </button></a>
+        <a href="{{ url_for('register') }}"><button> Register </button></a>
+        <a href="{{ url_for('home') }}"><button> Homepage </button></a>
         {% endif %}
     </div>
     <div class="content">
@@ -25,9 +30,10 @@
     {% if get_flashed_messages() %}
     <div class="flashes">
         {% for message in get_flashed_messages() %}
-            <p>{{ message }}</p>
+        <p>{{ message }}</p>
         {% endfor %}
     </div>
     {% endif %}
 </body>
+
 </html>

@@ -1,0 +1,17 @@
+h1 {
+    color: #000;
+    font-size: 70px;
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 40px;
+}
+
+body {
+    background-image: linear-gradient(to right, #ffeead, #ff6f69, #96ceb4);
+
+}
+
+.form-container {
+    text-align: center;
+}

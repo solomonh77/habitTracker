@@ -55,10 +55,46 @@ a {
 
 .firstP {
     margin-left: 50px;
-    margin-right: 400px;
+    margin-right: 200px;
 }
 
 .navigation {
+
+
+    margin-right: 375px;
+    margin-top: -20px
+}
+
+button {
+    font-size: 15px;
     display: flex;
-    margin-right: 200px;
+
+}
+
+
+.button {
+    font-size: 20px;
+    border-radius: 12px;
+    border-color: #A7C1DD;
+    margin: 1px;
+}
+
+.button:hover {
+    animation: bubble 0.4s ease-out;
+    color: #A7C1DD;
+
+}
+
+@keyframes bubble {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

@@ -1,0 +1,23 @@
+h1 {
+    color: #000;
+    font-size: 70px;
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 40px;
+}
+
+body {
+    background-image: linear-gradient(to right, #ffef96, #f4e1d2, #50394c);
+
+}
+
+.form-container {
+    text-align: center;
+}
+
+#logout {
+    font-style: italic;
+    text-decoration: underline;
+    text-align: center;
+}

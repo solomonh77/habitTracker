@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, redirect, session, flash, request
+from flask import Flask, render_template, url_for, redirect, session, flash, request
 from flask_sqlalchemy import SQLAlchemy
 # from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 # from flask_wtf import FlaskForm
@@ -6,15 +6,68 @@ from flask_sqlalchemy import SQLAlchemy
 # from wtforms.validators import InputRequired, Length, ValidationError
 # from flask_bcrypt import Bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from apscheduler.schedulers.background import BackgroundScheduler
+import sendgrid
+from sendgrid.helpers.mail import Mail, Email, To, Content
 
 
 app = Flask(__name__)
+# Global variable to store email details
+email_details = {}
+
+# Set up APScheduler
+scheduler = BackgroundScheduler()
+scheduler.start()
+def send_email_task():
+    sg = sendgrid.SendGridAPIClient(api_key='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')
+    from_email = Email('helana12358@gmail.com')
+    to_email = To(email)
+    subject = 'Hello! this is a reminder from Habit Tracker website!'
+    content = Content("text/plain", "Remember to do your habit today! Your habit you want to develop is: " + habit_description + "  -- Have Fun!!")
+
+    mail = Mail(from_email, to_email, subject, content)
+    response = sg.send(mail)
+   
+    try:
+        response = sg.send(mail)
+        # Check the response
+        print(f"Status Code: {response.status_code}")
+        print(f"Response Body: {response.body}")
+        print(f"Response Headers: {response.headers}")
+
+        # Check if the status code indicates success
+        if response.status_code == 202:
+            print("Email sent successfully!")
+        else:
+            print("Failed to send email.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Schedule email every other day
+def schedule_email():
+    '''
+    if frequency == "daily" or frequency== "7" or frequency == "everyday":
+        scheduler.add_job(send_email_task, 'interval', days=7)
+    if frequency == "1" or frequency == "one day a week":
+        scheduler.add_job(send_email_task, 'interval', days=1)
+    if frequency == "2":
+        scheduler.add_job(send_email_task, 'interval', days=2)
+    if frequency == "3":
+        scheduler.add_job(send_email_task, 'interval', days=3)
+    if frequency == "4":
+        scheduler.add_job(send_email_task, 'interval', days=4)
+    if frequency == "5":
+        scheduler.add_job(send_email_task, 'interval', days=5)
+    if frequency == "6":
+        scheduler.add_job(send_email_task, 'interval', days=6)
+    '''
+    scheduler.add_job(send_email_task, 'interval', seconds=10)
+   
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///habits_test.db'
 db = SQLAlchemy(app)
+
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,40 +77,13 @@ class Profile(db.Model):
     difficulty = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
 
-def insert_values():
-    with app.app_context():
-        db.create_all()
 
-        # Insert random values
-        random_profiles = [
-            Profile(habit="Exercise", habit_description="Daily morning run", frequency="Daily", difficulty="Medium", email="user1@example.com"),
-            Profile(habit="Reading", habit_description="Read 20 pages of a book", frequency="Daily", difficulty="Easy", email="user2@example.com"),
-            Profile(habit="Meditation", habit_description="Meditate for 15 minutes", frequency="Daily", difficulty="Hard", email="user3@example.com")
-        ]
-
-        for profile in random_profiles:
-            db.session.add(profile)
-        
-        db.session.commit()
-
-        # Query the database to check if values are inserted
-        profiles = Profile.query.all()
-        for profile in profiles:
-            print(f"ID: {profile.id}, Habit: {profile.habit}, Description: {profile.habit_description}, Frequency: {profile.frequency}, Difficulty: {profile.difficulty}, Email: {profile.email}")
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
-db = SQLAlchemy(app)
 
 
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view ="login"
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
-
+#
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
@@ -68,42 +94,17 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
     
-# class RegisterForm(FlaskForm):
-#     username = StringsField(ValidationError=[InputRequired(), Length(
-#         min=4, max=20)], render_kw={"placeholder": "Username"})
-#     password = PasswordField(validators=[InputRequired(), Length(
-#         min=4, max=20)], render_kw={"placeholder": "Password"})
-    
-#     sumbit = SubmitField("Register")
-
-#     def validate_username(self, username):
-#         existing_user_username = User.query.filter_by(
-#             username=username.data).first()
-        
-#         if existing_user_username:
-#             raise ValidationError(
-#                 "That username already exists. PLease choose a different one.")
-
-        
-
-# class LoginForm(FlaskForm):
-#     username = StringsField(ValidationError=[InputRequired(), Length(
-#         min=4, max=20)], render_kw={"placeholder": "Username"})
-#     password = PasswordField(validators=[InputRequired(), Length(
-#         min=4, max=20)], render_kw={"placeholder": "Password"})
-    
-#     sumbit = SubmitField("login")
 
 @app.route('/', methods=['GET'])
 def home():
-   return render_template('homePage.html')
+   
    session.pop('username', None)
    if 'username' in session:
        return redirect (url_for('dashboard'))
    
 
 
-   return render_template('login.html')
+   return render_template('homePage.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -120,30 +121,21 @@ def login():
         flash("Invaild Username Or Password")
     return render_template('login.html')
 
-    
-    # form = LoginForm()
-    # if form.vaildate_on_submit():
-    #     user=User.query.filter_by(username=form.username.data).first()
-    #     if user:
-    #         if bcrypt.check_password_hash(user.password, form.password.data):
-    #             login_user(user)
-    #             return redirect(url_for('dashboard'))
-    
-
 
 @app.route ('/dashboard')
-
 def dashboard():
+   
     if 'username' not in session:
         return redirect (url_for('login'))
-    return render_template('dashboard.html')
+    return render_template('dashboardPage.html')
+ 
 
 @app.route('/logout', methods=['GET', 'POST'])
 
 def logout():
     session.pop('username', None)
-    flash("You have been logged out.")
-    return redirect(url_for('login'))
+    
+    return render_template('logout.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -156,7 +148,7 @@ def register():
         if User.query.filter_by(username=username).first():
             flash("User already taken.")
             return redirect(url_for('register'))
-
+        global new_user
         new_user=User(username=username)
         new_user.set_password(password)
 
@@ -167,6 +159,18 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/habitPage', methods=['GET', 'POST'])
+def habitPage():
+    global email
+    global habit_description
+    global frequency
+    if request.method == "POST":
+        habit = request.form['habit']
+        habit_description = request.form['habit_description']
+        frequency = request.form['frequency']
+        difficulty = request.form['difficulty']
+        email = request.form['email']
+        
     # form = RegisterForm()
 
     # if form.validate_on_username():
@@ -175,34 +179,7 @@ def register():
     #     db.session.add(new_user)
     #     db.session.commit()
     #     return redirect(url_for('login'))
-
     
-
-
-
-
- 
-
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboardPage.html')
-
-@app.route('/habitPage', methods=['GET', 'POST'])
-def habitPage():
-    
-    if request.method == "POST":
-        habit = request.form['habit']
-        habit_description = request.form['habit_description']
-        frequency = request.form['frequency']
-        difficulty = request.form['difficulty']
-        email = request.form['email']
-        print(habit)
-        print(habit_description)
-        print(frequency)
-        print(difficulty)
-        print(email)
-
-
         new_habit = Profile(
             habit=habit,
             habit_description=habit_description,
@@ -210,23 +187,30 @@ def habitPage():
             difficulty=difficulty,
             email=email
         )
-        db.session.add(new_habit)
-        db.session.commit()
+        try:
+            db.session.add(new_habit)
+            db.session.commit()
+            print("it was successful!")
+        except Exception as e:
+            db.session.rollback()
+            print(f"An error occurred: {e}")
+        schedule_email()
 
         return render_template('dashboardPage.html', habit_name=habit, habit_description=habit_description, frequency=frequency, difficulty=difficulty)
-        #return redirect(url_for('dashboard', habit_name=habit, habit_description=habit_description, frequency=frequency, difficulty=difficulty))  # Redirect to the form page or another page after submission
-        
+        #return redirect(url_for('dashboard'))  # Redirect to the form page or another page after submission
+       
     return render_template('habitPage.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
     return "Form submitted"
 
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, port=5447)
 
     
-
-
