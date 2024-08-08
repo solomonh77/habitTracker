@@ -19,7 +19,7 @@ email_details = {}
 scheduler = BackgroundScheduler()
 scheduler.start()
 def send_email_task():
-    sg = sendgrid.SendGridAPIClient(api_key='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')
+    sg = sendgrid.SendGridAPIClient(api_key='sendgrid api')
     from_email = Email('helana12358@gmail.com')
     to_email = To(email)
     subject = 'Hello! this is a reminder from Habit Tracker website!'
